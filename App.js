@@ -1,20 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import SplashScreen from './src/components/SplashScreen';
+import LoginScreen from './src/components/Login';
+import SigninScreen from './src/components/Sign_in';
+import DashboardScreen from './src/components/Dashboard';
+import PDFScreen from './src/components/GenerateArchive';
+import ChartScreen from './src/components/GenerateChart';
+import Profile from './src/components/Profile';
+import { ActiveIconProvider } from './src/components/ActiveIconProvider';
+import Toolbar from './src/components/Toolbar';
+import { ChartDataProvider } from './src/components/ChartDataContext';
+import RegisterScreen from './src/components/Register';
 
-export default function App() {
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function TabNavigator() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ChartDataProvider>
+    <Tab.Navigator tabBar={props => <Toolbar {...props} />}>
+      <Tab.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="Home" component={DashboardScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="PDF" component={PDFScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="Chart" component={ChartScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }}/>
+    </Tab.Navigator>
+    </ChartDataProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <ActiveIconProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Splash">
+          <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Signin" component={SigninScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ActiveIconProvider>
+  );
+}
