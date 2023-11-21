@@ -11,11 +11,11 @@ const Login = ({ navigation }) => {
         </ImageBackground><View style={styles.container}>
                 <Text style={styles.title}>Ótimo dia!</Text>
                 <Text style={styles.subtitle}>Como deseja acessar?</Text>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Signin')}>
+                <TouchableOpacity style={styles.button}>
                     <Image source={require('./../assets/google.png')} style={styles.icon}></Image>
                     <Text style={styles.buttonText}>Entrar com o Google</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.secondButton}>
+                <TouchableOpacity style={styles.secondButton} onPress={() => navigation.navigate('Signin')}>
                     <Text style={styles.secondButtonText}>Outras formas</Text>
                 </TouchableOpacity>
             </View></>

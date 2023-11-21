@@ -8,7 +8,6 @@ import Toast from 'react-native-root-toast';
 const PDFScreen = ({ navigation, route }) => {
     const { chartData } = useChartData();
 
-    // Verifique se route.params existe antes de tentar acessar firstChartData e secondChartData
     const { firstChartData, secondChartData } = route.params || {};
 
     const createPDF = async () => {

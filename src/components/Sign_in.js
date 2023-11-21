@@ -1,11 +1,25 @@
-import React, {useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import Checkbox from 'expo-checkbox';
-
+import * as FileSystem from 'expo-file-system';
 
 const Sign_in = ({ navigation }) => {
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isChecked, setChecked] = useState(false);
+
+  const handleLogin = async () => {
+    const fileUri = FileSystem.documentDirectory + 'users.txt';
+    const fileContent = await FileSystem.readAsStringAsync(fileUri);
+    const users = fileContent.split('\n');
+    const userExists = users.some(user => user === `${email},${password}`);
+    if (userExists) {
+      Alert.alert('Sucesso', 'Login efetuado com sucesso!');
+      navigation.navigate('Main', { screen: 'Dashboard' });
+    } else {
+      Alert.alert('Erro', 'Usuário não encontrado.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -17,6 +31,7 @@ const Sign_in = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Digite seu e-mail..."
+          onChangeText={text => setEmail(text)}
         />
       </View>
 
@@ -26,6 +41,7 @@ const Sign_in = ({ navigation }) => {
           style={styles.input}
           placeholder="Digite sua senha..."
           secureTextEntry
+          onChangeText={text => setPassword(text)}
         />
       </View>
 
@@ -44,7 +60,7 @@ const Sign_in = ({ navigation }) => {
       </View>
       
       <View style={styles.entering}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main', { screen: 'Dashboard' })}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonOutline} onPress={() => navigation.navigate('Register')}>

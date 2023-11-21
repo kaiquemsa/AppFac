@@ -12,7 +12,6 @@ const Dashboard = ({ navigation }) => {
     const isEmptyFirstChart = !chartData.firstChart || chartData.firstChart.labels.length === 0 && chartData.firstChart.datasets[0].data.length === 0;
     const isEmptySecondChart = !chartData.secondChart || chartData.secondChart.datasets[0].data.length === 0;
 
-    // Se chartData estiver vazio, use valores padrão
     const dataFirstChart = isEmptyFirstChart ? {
         labels: ["", "", "", "", "", ""],
         datasets: [{ data: [0, 0, 0, 0, 0, 0] }]
@@ -34,9 +33,9 @@ const Dashboard = ({ navigation }) => {
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <BarChart
                     data={dataFirstChart}
-                    width={Dimensions.get("window").width - 60} // from react-native
+                    width={Dimensions.get("window").width - 60} 
                     height={220}
-                    yAxisInterval={1} // optional, defaults to 1
+                    yAxisInterval={1} 
                     chartConfig={{
                         backgroundColor: "#FFFFFF",
                         backgroundGradientFrom: "#FFFFFF",

@@ -1,53 +1,67 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 const Register = ({ navigation }) => {
-    return(
-        <View style={styles.container}>
-        <Text style={styles.title}>Cadastre-se</Text>
-        <Text style={styles.subtitle}>Informe seu e-mail e crie uma senha </Text>
-  
-        <View style={styles.email}>
-          <Text>E-mail</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Digite seu e-mail..."
-          />
-        </View>
-        <View style={styles.email}>
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleRegister = async () => {
+    const data = `${email},${password}\n`;
+    const fileUri = FileSystem.documentDirectory + 'users.txt';
+    await FileSystem.writeAsStringAsync(fileUri, data, { append: true });
+    Alert.alert('Sucesso', 'Usuário registrado com sucesso!');
+    navigation.navigate('Signin');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Cadastre-se</Text>
+      <Text style={styles.subtitle}>Informe seu e-mail e crie uma senha </Text>
+
+      <View style={styles.email}>
+        <Text>E-mail</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite seu e-mail..."
+          onChangeText={text => setEmail(text)}
+        />
+      </View>
+      <View style={styles.email}>
           <Text>Repita seu e-mail</Text>
           <TextInput
             style={styles.input}
             placeholder="Repita seu e-mail..."
           />
         </View>
-  
-        <View style={styles.password}>
-          <Text>Senha</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Digite sua senha..."
-            secureTextEntry
-          />
-        </View>
-        <View style={styles.password}>
+
+      <View style={styles.password}>
+        <Text>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite sua senha..."
+          secureTextEntry
+          onChangeText={text => setPassword(text)}
+        />
+      </View>
+      <View style={styles.password}>
           <Text>Repita sua senha</Text>
           <TextInput
             style={styles.input}
             placeholder="Repita sua senha..."
             secureTextEntry
           />
-        </View>
-        
-        <View style={styles.entering}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main', { screen: 'Dashboard' })}>
-              <Text style={styles.buttonText}>Cadastrar</Text>
-          </TouchableOpacity>
-        </View>
-  
       </View>
-    );
-  }
+
+      <View style={styles.entering}>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Cadastrar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 
   const styles = StyleSheet.create({
     container: {

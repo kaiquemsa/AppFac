@@ -8,11 +8,10 @@ const Profile = ({ navigation }) => {
   const [nome, setNome] = useState('');
   const [escola, setEscola] = useState('');
   const [anoLetivo, setAnoLetivo] = useState('');
-  const [fotoPerfil, setFotoPerfil] = useState(require('./../assets/userIcon.png'));
-  const [isEditing, setIsEditing] = useState(false); // Adicione este estado
+  const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); 
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -31,13 +30,13 @@ const Profile = ({ navigation }) => {
         <View style={styles.containerUp}>
           <Text style={{marginTop:20, color: 'white', fontWeight: 'bold', fontSize: 14}}>Edit Profile</Text>
           <TouchableOpacity style={styles.borderIcon} onPress={pickImage}>
-          {fotoPerfil && <Image source={{ uri: fotoPerfil }} style={{ width: 145, height: 145, borderRadius: 100 }} />}
+          {fotoPerfil ? <Image source={{ uri: fotoPerfil }} style={{ width: 145, height: 145, borderRadius: 100 }} /> : <Image source={require('./../assets/userIcon.png')} style={{ width: 145, height: 145, borderRadius: 100 }} />}
           </TouchableOpacity>
         </View>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
               style={{backgroundColor: '#99CC6A', width: 105, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 5}}
-              onPress={() => setIsEditing(true)} // Ative a edição quando este botão for pressionado
+              onPress={() => setIsEditing(true)} 
           >
               <Text style={{color: 'white'}}>Edit Profile</Text>
           </TouchableOpacity>
